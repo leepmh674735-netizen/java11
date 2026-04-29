@@ -1,7 +1,7 @@
 let all = document.getElementById("all");
 let ch = document.querySelectorAll(".ch");
 let delButtons = document.getElementsByClassName("del");
-let selectDel = document.getElementById("selectdel"); // 오타 수정: '를 "로 변경
+let selectDel = document.getElementById("selectdel"); 
 
 // 1. 선택 삭제 버튼 (체크된 항목들 한꺼번에 삭제)
 selectDel.addEventListener("click", () => {
