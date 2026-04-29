@@ -4,7 +4,14 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.winter.yubin.cart.CartMapper">
-    <insert id="create" parameterType="CartDTO">
+     <delete id="delete" parameterType="java.util.List">
+         DELETE FROM "TB_CART"
+         <foreach collection="list" item="item" open="where" separator="or">        
+           "USERNAME"=#{username} AND "PRODUCT_NUM"=#{item.productNum}
+        </foreach>
+      </delete>
+   
+  <insert id="create" parameterType="CartDTO">
 		INSERT INTO "TB_CART"
 		VALUES (#{username}, #{productNum})
 	</insert>

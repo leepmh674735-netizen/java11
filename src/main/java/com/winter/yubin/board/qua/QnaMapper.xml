@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.winter.app.board.qna.QnaMapper">
+    <sql id="search_sql">
+  		WHERE
+  		<choose>
+  			<when test="kind == 'v2'">"BOARD_CONTENTS"</when>
+  			<when test="kind == 'v3'">"BOARD_WRITER"</when>
+  			<otherwise>"BOARD_TITLE"</otherwise>
+  		</choose>
+  		LIKE concat('%', #{search}, '%')
+  	</sql>
+  	
+  	  <select id="getCount" resultType="Long" parameterType="Pager">
+  		SELECT COUNT("BOARD_NUM") FROM "TB_QNA"
+  		<include refid="search_sql"></include>
+  	</select>
+  	<select id="list" resultType="QnaDTO" parameterType="Pager">
+  		SELECT * FROM "TB_QNA"
+  		<include refid="search_sql"></include>
+  		ORDER BY "BOARD_NUM" DESC
+  		LIMIT #{perPage} OFFSET #{startNum}
+  	</select>
+  	
+  	 <select id="detail" parameterType="QnaDTO"  resultMap="detailResult">
+  		SELECT *
+  		FROM "TB_QNA" N
+  			 LEFT JOIN
+  			 "TB_QNAFILE" F
+  			 USING ("BOARD_NUM")
+  		WHERE "BOARD_NUM"=#{boardNum}
+  	
+  	</select>
+  	
+  	  	<resultMap type="QnaDTO" id="detailResult">
+  		<id column="BOARD_NUM" property="boardNum"/>
+  		<result column="BOARD_TITLE" property="boardTitle"/>
+  		<result column="BOARD_WRITER" property="boardWriter"/>
+  		<result column="BOARD_CONTENTS" property="boardContents"/>
+  		<result column="BOARD_DATE" property="boardDate"/>
+  		<result column="BOARD_HIT" property="boardHit"/>
+  		<collection property="list" javaType="java.util.List" ofType="FileDTO">
+  			<id column="FILE_NUM" property="fileNum"/>
+  			<result column="FILE_NAME" property="fileName"/>
+  			<result column="ORI_NAME" property="oriName"/>
+  		</collection>
+  	
+  	</resultMap>
+  	
+  	<insert id="create" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="boardNum">
+  		INSERT INTO "TB_QNA"
+  		VALUES (default, #{boardTitle}, #{boardWriter}, #{boardContents}, now(), 0,0,0,0)
+  	</insert>
+  	<insert id="createFile" parameterType="QnaFileDTO">
+  		INSERT INTO "TB_QNAFILE"
+  		VALUES (DEFAULT,#{fileName}, #{oriName}, #{boardNum})
+  	</insert>
+  	
+  	  	<update id="update" parameterType="QnaDTO">
+  		UPDATE "TB_QNA"
+  		SET 
+  			"BOARD_TITLE"=#{boardTitle},
+  			"BOARD_CONTENTS"=#{boardContents}
+  		WHERE "BOARD_NUM"=#{boardNum}	
+  	</update>
+  	
+  	<delete id="delete" parameterType="QnaDTO">
+  		DELETE FROM "TB_QNA"
+  		WHERE "BOARD_NUM"=#{boardNum}
+  	</delete>
+  	
+  	<delete id="fileDelete" parameterType="FileDTO">
+  		DELETE FROM "TB_QNAFILE"
+  		WHERE "FILE_NUM"=#{fileNum}
+  	</delete>
+  	
+  	<delete id="fileDeleteFor" parameterType="java.util.List">
+  		DELETE FROM "TB_QNAFILE"
+  		WHERE "FILE_NUM" IN
+  			<foreach item="item" index="index" collection="list"
+  				open="(" separator="," close=")"
+  			>
+  				#{item.fileNum}
+  			</foreach>
+
+  	</delete>
+  	
+  </mapper>

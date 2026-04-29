@@ -13,6 +13,7 @@ import com.winter.yubin.member.MemberDTO;
 import com.winter.yubin.product.ProductDTO;
 
 import jakarta.servlet.http.HttpSession;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/cart/*")
@@ -39,6 +40,10 @@ public class CartController {
 		
 		return "commons/ajaxResult";
 	}
+	
+	@PostMapping("delete")
+	public String delete(HttpSession session, Long [] productNum, Model model)throws Exception
+	 MemberDTO memberDTO 
 	
 	
 

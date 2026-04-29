@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- mapper.java의 풀패키지명.클래스명 -->
+  <mapper namespace="com.winter.app.board.notice.NoticeMapper">
+  	<sql id="search_sql">
+  		WHERE
+  		<choose>
+  			<when test="kind == 'v2'">"BOARD_CONTENTS"</when>
+  			<when test="kind == 'v3'">"BOARD_WRITER"</when>
+  			<otherwise>"BOARD_TITLE"</otherwise>
+  		</choose>
+  		LIKE concat('%', #{search}, '%')
+  	</sql>
+  	
+  	<select id="getCount" resultType="Long" parameterType="Pager">
+  		SELECT COUNT("BOARD_NUM") FROM "TB_NOTICE"
+  		<include refid="search_sql"></include>
+  	</select>
+  
+  	<!-- ID는 mapper.java의 메서드명 -->
+  	<select id="list" resultType="NoticeDTO" parameterType="Pager">
+  		SELECT * FROM "TB_NOTICE"
+  		<include refid="search_sql"></include>
+  		ORDER BY "BOARD_NUM" DESC
+  		LIMIT #{perPage} OFFSET #{startNum}
+  	</select>
+  	
+  	<select id="detail" parameterType="NoticeDTO"  resultMap="detailResult">
+  		SELECT *
+  		FROM "TB_NOTICE" N
+  			 LEFT JOIN
+  			 "TB_NOTICEFILE" F
+  			 USING ("BOARD_NUM")
+  		WHERE "BOARD_NUM"=#{boardNum}
+  	
+  	</select>
+  	
+  	
+  	<resultMap type="NoticeDTO" id="detailResult">
+  		<id column="BOARD_NUM" property="boardNum"/>
+  		<result column="BOARD_TITLE" property="boardTitle"/>
+  		<result column="BOARD_WRITER" property="boardWriter"/>
+  		<result column="BOARD_CONTENTS" property="boardContents"/>
+  		<result column="BOARD_DATE" property="boardDate"/>
+  		<result column="BOARD_HIT" property="boardHit"/>
+  		<collection property="list" javaType="java.util.List" ofType="FileDTO">
+  			<id column="FILE_NUM" property="fileNum"/>
+  			<result column="FILE_NAME" property="fileName"/>
+  			<result column="ORI_NAME" property="oriName"/>
+  		</collection>
+  	
+  	</resultMap>
+  	
+  	<insert id="create" parameterType="NoticeDTO" useGeneratedKeys="true" keyProperty="boardNum">
+  		
+  		INSERT INTO "TB_NOTICE" 
+  		VALUES (DEFAULT,#{boardTitle}, #{boardWriter}, #{boardContents},now(), 0)
+  	</insert>
+  	
+  	<insert id="createFile" parameterType="NoticeFileDTO">
+  		INSERT INTO "TB_NOTICEFILE"
+  		VALUES (DEFAULT,#{fileName}, #{oriName}, #{boardNum})
+  	</insert>
+  	
+  	<update id="update" parameterType="NoticeDTO">
+  		UPDATE "TB_NOTICE"
+  		SET 
+  			"BOARD_TITLE"=#{boardTitle},
+  			"BOARD_CONTENTS"=#{boardContents}
+  		WHERE "BOARD_NUM"=#{boardNum}	
+  	</update>
+  
+  	<delete id="delete" parameterType="NoticeDTO">
+  		DELETE FROM "TB_NOTICE"
+  		WHERE "BOARD_NUM"=#{boardNum}
+  	</delete>
+  
+  </mapper>
