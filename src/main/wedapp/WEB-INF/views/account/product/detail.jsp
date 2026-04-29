@@ -23,8 +23,11 @@
                     
                     <h3>${dto.productName}</h3>
 					<h3>${dto.productRate}</h3>
-					<a href="../account/create?productNum=${dto.productNum}" class="btn btn-primary">상품 가입</a>
-					<button id="create" data-pn="${dto.productNum}" class="btn btn-danger">장바구니담기</button>
+					<div id="review_List">
+					
+					</div>
+					      <textarea rows="6"></textarea>
+					      <button>등록</button>
                 </div>
                 <!-- End Page container-fluid -->
                 
@@ -38,5 +41,6 @@
 	
 	<c:import url="/WEB-INF/views/temp/footer_script.jsp"></c:import>
 	<script src="/js/cart/cart.js"></script>
+	
 </body>
 </html>

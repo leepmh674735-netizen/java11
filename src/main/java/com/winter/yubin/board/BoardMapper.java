@@ -2,8 +2,8 @@ package com.winter.yubin.board;
 
 import java.util.List;
 
-import com.winter.app.file.FileDTO;
-import com.winter.app.pager.Pager;
+import com.winter.yubin.file.FileDTO;
+import com.winter.yubin.pager.Pager;
 
 public interface BoardMapper {
 	

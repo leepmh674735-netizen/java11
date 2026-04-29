@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.winter.app.pager.Pager;
+import com.winter.yubin.pager.Pager;
 
 public interface BoardService {
 	

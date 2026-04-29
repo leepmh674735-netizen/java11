@@ -19,23 +19,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">장바구니 List Page</h1>
-                    
-                    <div class="row">
-                    	<div>
-                    		<input type="checkbox" id="all">
-                    		<button id="selectdel" class="btn btn-primary">선택삭제</button>
-                    		<button class="btn btn-danger">선택가입</button>
-                    	</div>
-                    </div>
-                    
-                    <div class="row" id="list">
-                    
-                    	
-                    
-                    	
-                    </div>
-                    
+                    <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
 
                 </div>
                 <!-- End Page container-fluid -->
@@ -49,7 +33,6 @@
 	<!-- End Wrapper -->
 	
 	<c:import url="/WEB-INF/views/temp/footer_script.jsp"></c:import>
-	<script src="/js/cart/list.js"></script>
 
 </body>
 </html>
