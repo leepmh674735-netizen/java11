@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.winter.app.member.MemberDTO;
-import com.winter.app.product.ProductDTO;
+import com.winter.yubin.member.MemberDTO;
+import com.winter.yubin.product.ProductDTO;
 
 @Service
 public class CartService {

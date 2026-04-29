@@ -23,23 +23,23 @@ public class CartController {
 	
 	@GetMapping("list")
 	public void list(HttpSession session, Model model)throws Exception{
-		memberDTO memberDTO = (MemberDTO)session.getAttribute("member");
+		MemberDTO memberDTO = (MemberDTO)session.getAttribute("member");
 		List<ProductDTO> ar = cartService.list(memberDTO);
-		model.addAllAttributes("list", ar);
+		model.addAttribute("list", ar);
 	}
 	
 	@PostMapping("create")
-	public String create(HttpSession session, CartDTO cartDTO, Model model)throws Excption{
+	public String create(HttpSession session, CartDTO cartDTO, Model model)throws Exception{
 		MemberDTO memberDTO = (MemberDTO)session.getAttribute("member");
 		cartDTO.setUsername(memberDTO.getUsername());
 		
 		int result = cartService.create(cartDTO);
 		
-		model.addAllAttributes("result", result);
+		model.addAttribute("result", result);
 		
 		return "commons/ajaxResult";
 	}
+	
+	
 
-
-		
 }
