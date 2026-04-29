@@ -9,7 +9,8 @@ import lombok.ToString;
 @ToString
 public class CartDTO {
 	
-	private String username;
-	private Long productNum;
-
+	private Long cartId;    // 장바구니 번호
+    private String userId;  // 회원 아이디
+    private Long productId; // 상품 번호
+    private Integer amount; // 수량
 }
