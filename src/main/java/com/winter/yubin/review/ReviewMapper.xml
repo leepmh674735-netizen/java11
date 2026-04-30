@@ -2,11 +2,24 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.winter.app.review.ReviewMapper">
-  	<select id="list" parameterType="ReviewDTO" resultType="ReviewDTO">
-  		SELECT * FROM "TB_REVIEW"
-  		WHERE "PRODUCT_NUM"=#{productNum}
-  		ORDER BY "REVIEW_NUM" DESC
-  	</select>
-  </mapper>
+
+<mapper namespace="com.winter.app.review.ReviewMapper">
+	<select id="list" parameterType="ReviewDTO"
+		resultType="ReviewDTO">
+		SELECT * FROM "TB_REVIEW"
+		WHERE "PRODUCT_NUM"=#{productNum}
+		ORDER BY "REVIEW_NUM" DESC
+	</select>
+	<insert id="create" parameterType="ReviewDTO">
+		INSERT INTO "TB_REVIEW"
+		VALUES (default, #{username}, #{reviewContents}, #{reviewStar}, now(),
+		#{productNum})
+	</insert>
+
+	<delete id="delete" parameterType="ReviewDTO">
+		DELETE FROM "TB_REVIEW"
+		SET "REVIEW_CONTENTS"=#{reviewContents}
+  		WHERE "REVIEW_NUM"=#{reviewNum}
+	</delete>
+
+</mapper>

@@ -1,4 +1,4 @@
-package com.winter.app.review;
+package com.winter.yubin.review;
 
 import java.time.LocalDateTime;
 

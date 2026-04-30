@@ -10,6 +10,7 @@
   		<th>Contents</th>
   		<th>Writer</th>
   		<th>Date</th>
+  		<th></th>
   	</tr>
   </thead>
   <tbody>
@@ -20,6 +21,10 @@
   			<td>
   				<fmt:parseDate value="${r.reviewDate}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
   				<fmt:formatDate value="${parsedDateTime}" pattern="yyyy-MM-dd HH:mm" />
+  			</td>
+  			<td data-review-num="${r.reviewNum}">
+  				<button class="btn btn-success review_update">수정</button>
+  				<button class="btn btn-danger review_delete">삭제</button>
   			</td>
   			
   		</tr>
