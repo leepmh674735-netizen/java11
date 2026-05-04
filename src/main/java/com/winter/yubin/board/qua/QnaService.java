@@ -23,7 +23,7 @@ public class QnaService implements BoardService {
 	@Autowired
 	private FileManager fileManager;
 	
-	@Value("${app.board.qna}")
+	@Value("${yubin.board.qna}")
 	private String name;
 	
 

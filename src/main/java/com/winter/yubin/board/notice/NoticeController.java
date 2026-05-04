@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.winter.yubin.board.BoardDTO;
+import com.winter.yubin.file.FileDTO;
 import com.winter.yubin.pager.Pager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +29,22 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 	
-	@Value("${app.board.notice}")
+	@Value("${yubin.board.notice}")
 	private String name;
 	
 	@ModelAttribute("name")
 	public String getName() {
 		return this.name;
+	}
+	
+	@GetMapping("down")
+	public String fileDown(NoticeFileDTO noticeFileDTO, Model model)throws Exception{
+		
+		FileDTO fileDTO = noticeService.fileDetail(noticeFileDTO);
+		
+		model.addAttribute("fileDTO", fileDTO);
+		
+		return "fileDownView";
 	}
 	
 	@GetMapping("list")

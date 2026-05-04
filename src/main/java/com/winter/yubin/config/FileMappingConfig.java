@@ -8,10 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class FileMappingConfig implements WebMvcConfigurer {
 
-	@Value("${app.upload.url}")
+	@Value("${yubin.upload.url}")
 	private String url;
 	
-	@Value("${app.upload.path}")
+	@Value("${yubin.upload.path}")
 	private String path;
 	
 	@Override
