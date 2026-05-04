@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileManager {
 	
-	@Value("${app.upload.base}")
+	@Value("${yubin.upload.base}")
 	private String path;
 	
 	public boolean fileDelete(String name, FileDTO fileDTO)throws Exception{

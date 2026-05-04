@@ -17,7 +17,10 @@ const create = document.getElementById("create");
 
 // })
 
-let count=0;
+let count=result.getAttribute("data-file-size");
+if(count==underfined){
+	count=0;
+}
 
 add.addEventListener("click", function(){
     if(count>4){
