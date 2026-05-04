@@ -6,45 +6,33 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.winter.yubin.interceptors.LoginCheckInterceptor;
-import com.winter.yubin.interceptors.TestInterceptor;
+import com.winter.yubin.interceptors.WriterCheckInterceptor;
 
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
-	
-	@Autowired
-	private TestInterceptor testInterceptor;
-	
-	@Autowired
-	private LoginCheckInterceptor loginCheckInterceptor;
-	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		
-		//member로 시작하는 모든 url, login, join
-		//qna list를 제외한 나머지들은 회원만 사용 가능
-		registry.addInterceptor(loginCheckInterceptor)
-				.addPathPatterns("/member/*")
-				.addPathPatterns("/qna/*")
-				.excludePathPatterns("/member/login", "/member/join")
-				.excludePathPatterns("/qna/list")
-				;
-		
-		
-		//적용할 Interceptor등로
-		registry.addInterceptor(testInterceptor)
-		
-		//Interceptor를 사용할 URL 패턴 작성, addPathPatterns 여러번 호출 가능
-				.addPathPatterns("/notice/*", "/qna/*")
-		//Interceptor를 제외할 URL 패턴 작성, excludePathPatterns 여러번 호출 가능		
-				.excludePathPatterns("/notice/detail")
-				;
-		
-	
-		
-				
-		
-	}
-	
-	
 
+    @Autowired
+    private LoginCheckInterceptor loginCheckInterceptor;
+    
+    @Autowired
+    private WriterCheckInterceptor writerCheckInterceptor;
+    
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        
+        // 1. 로그인 체크 인터셉터
+        // 로그인하지 않은 사용자는 아예 접근조차 못하게 막는 첫 번째 관문입니다.
+        registry.addInterceptor(loginCheckInterceptor)
+                .addPathPatterns("/member/**")
+                .addPathPatterns("/qna/**")
+                .excludePathPatterns("/member/login", "/member/join")
+                .excludePathPatterns("/qna/list");
+        
+        // 2. 작성자 체크 인터셉터
+        // 로그인은 했지만, '남의 글'을 수정/삭제하려는 행위를 막는 두 번째 관문입니다.
+        // 수정(update), 삭제(delete) 경로에만 적용하는 것이 일반적입니다.
+        registry.addInterceptor(writerCheckInterceptor)
+                .addPathPatterns("/notice/update", "/notice/delete")
+                .addPathPatterns("/qna/update", "/qna/delete");
+    }
 }

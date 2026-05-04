@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.OrderMapper">
+
+    <!-- 1. 주문 내역 삽입 -->
+    <!-- useGeneratedKeys를 사용하면 DB에서 자동 생성된 PK(id)를 DTO에 바로 담아올 수 있어 편리합니다. -->
+    <insert id="insertOrder" parameterType="com.example.dto.OrderRequestDTO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders (product_id, quantity, user_id, order_date)
+        VALUES (#{productId}, #{quantity}, #{userId}, CURRENT_TIMESTAMP)
+    </insert>
+
+    <!-- 2. 현재 재고 조회 -->
+    <!-- 파라미터가 하나일 경우 parameterType은 생략 가능하지만, 명확성을 위해 타입을 명시하거나 이름을 맞춥니다. -->
+    <select id="getStockQuantity" resultType="int">
+        SELECT stock_quantity 
+        FROM products 
+        WHERE id = #{productId}
+    </select>
+
+    <!-- 3. 재고 차감 -->
+    <!-- 업데이트된 행의 수(row count)를 반환하므로, 서비스 계층에서 0이 반환되면 '재고 부족'으로 처리할 수 있습니다. -->
+    <update id="updateStock">
+        UPDATE products 
+        SET stock_quantity = stock_quantity - #{quantity}
+        WHERE id = #{productId} 
+          AND stock_quantity >= #{quantity}
+    </update>
+
+</mapper>

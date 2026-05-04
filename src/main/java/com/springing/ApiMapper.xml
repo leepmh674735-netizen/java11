@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.winter.yubin.review.ReviewMapper">
+
+    <!-- 1. 조회 (Select) -->
+    <!-- 전체 조회의 경우 파라미터가 필요 없는 경우가 많으므로 parameterType은 상황에 따라 제거 가능합니다. -->
+    <select id="getList" resultType="com.winter.yubin.review.ReviewDTO">
+        SELECT 
+            NUM, 
+            WRITER, 
+            CONTENT, 
+            REGDATE 
+        FROM REVIEW
+        WHERE NUM > 0
+        ORDER BY NUM DESC
+    </select>
+
+    <!-- 2. 상세 조회 (Detail) - 추가 권장 -->
+    <select id="getDetail" resultType="com.winter.yubin.review.ReviewDTO" parameterType="com.winter.yubin.review.ReviewDTO">
+        SELECT * FROM REVIEW WHERE NUM = #{num}
+    </select>
+
+    <!-- 3. 삽입 (Insert) -->
+    <!-- #{writer} 등은 DTO의 필드명과 정확히 일치해야 합니다 (대소문자 주의) -->
+    <insert id="setCreate" parameterType="com.winter.yubin.review.ReviewDTO">
+        INSERT INTO REVIEW (NUM, WRITER, CONTENT, REGDATE)
+        VALUES (REVIEW_SEQ.NEXTVAL, #{writer}, #{content}, SYSDATE)
+    </insert>
+
+    <!-- 4. 수정 (Update) -->
+    <update id="setUpdate" parameterType="com.winter.yubin.review.ReviewDTO">
+        UPDATE REVIEW 
+        SET 
+            CONTENT = #{content},
+            REGDATE = SYSDATE  <!-- 수정 시 시간을 업데이트할 경우 추가 -->
+        WHERE NUM = #{num}
+    </update>
+
+    <!-- 5. 삭제 (Delete) -->
+    <!-- 삭제는 보통 PK(NUM) 값만 있으면 되므로 파라미터 타입을 DTO 대신 Long이나 Integer로 쓰기도 합니다 -->
+    <delete id="setDelete" parameterType="com.winter.yubin.review.ReviewDTO">
+        DELETE FROM REVIEW WHERE NUM = #{num}
+    </delete>
+
+</mapper>
