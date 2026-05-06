@@ -27,24 +27,35 @@
                     <h1 class="h3 mb-4 text-gray-800">Create Page</h1>
                     
                     <div>
-                    	<form:form action="./login" modelAttribute="memberDTO" method="post" enctype="multipart/form-data">
+                    	<form:form method="post" modelAttribute="memberDTO" enctype="multipart/form-data">
+						  						  					  					 
 						  <div class="form-group">
-						    
-						    <form:input path="username" cssClass="form-control" id="username"/>
-						    <form:errors path="username"></form:errors>
-						    
+						    <label for="name">Name</label>
+						    <form:input path="name" class="form-control" id="name"/>
+						    <form:errors path="name"></form:errors>
 						  </div>
 						  <div class="form-group">
-						    <label for="password">Password</label>
-						    <form:password path="password" cssClass="form-control" id="password" />
-						    <form:errors path="password"></form:errors>
-						  </div>						 
-                    	  
+						    <label for="phone">Phone</label>
+						    <form:input path="phone" class="form-control" id="phone"/>
+						    <form:errors path="phone"></form:errors>
+						  </div>
+						  <div class="form-group">
+						    <label for="email">Email</label>
+						    <form:input path="email" class="form-control" id="email"/>
+						    <form:errors path="email"></form:errors>
+						  </div>						  
+                    	
+						  <div class="form-group">
+						    <label for="birth">Birth</label>
+						    <input type="date" value="${memberDTO.birth}" name="birth" class="form-control" id="birth">
+						    <form:errors path="birth"></form:errors>
+						  </div>
+						  <div class="form-group">
+						  	<label>첨부파일</label>
+						  	<input type="file" name="attach" class="form-control">
+						  </div>
 						  <button type="submit" class="btn btn-primary">Submit</button>
                     	</form:form>
-	                    
-                    	
-                    
                     </div>
 
                 </div>
@@ -68,6 +79,7 @@
         height: 100
       });
     </script>
+	<!-- <script src="/js/member/join.js"></script> -->
 
 </body>
 </html>
