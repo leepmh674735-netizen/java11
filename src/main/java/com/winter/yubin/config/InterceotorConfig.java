@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.winter.yubin.interceptors.LoginCheckInterceptor;
 import com.winter.yubin.interceptors.WriterCheckInterceptor;
@@ -17,6 +18,12 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Autowired
     private WriterCheckInterceptor writerCheckInterceptor;
     
+    @Autowired
+    private LocaleChangeInterceptor localeChangeInterceptor;
+    
+    
+    
+    
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         
@@ -27,6 +34,12 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/qna/**")
                 .excludePathPatterns("/member/login", "/member/join")
                 .excludePathPatterns("/qna/list");
+        
+        registry.addInterceptor(writerCheckInterceptor)
+                .addPathPatters("/notice/update", "/qua/update")
+                
+        registry.addInterceptor(localeChangeInterceptor)
+                 .addInterceptor)
         
         // 2. 작성자 체크 인터셉터
         // 로그인은 했지만, '남의 글'을 수정/삭제하려는 행위를 막는 두 번째 관문입니다.

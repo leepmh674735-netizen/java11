@@ -1,94 +1,80 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>    
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-	<c:import url="/WEB-INF/views/temp/head_css.jsp"></c:import>
-	
-	<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
-   
-	
+    <meta charset="UTF-8">
+    <title>Member Join</title>
+    <c:import url="/WEB-INF/views/temp/head_css.jsp"></c:import>
 </head>
 <body id="page-top">
-	<div id="wrapper">
-		<c:import url="/WEB-INF/views/temp/sidebar.jsp"></c:import>
-		<div id="content-wrapper" class="d-flex flex-column">
-			<div id="content">
-				<c:import url="/WEB-INF/views/temp/topbar.jsp"></c:import>
-				
-				<!-- Begin Page Content -->
+    <div id="wrapper">
+        <c:import url="/WEB-INF/views/temp/sidebar.jsp"></c:import>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <c:import url="/WEB-INF/views/temp/topbar.jsp"></c:import>
+                
                 <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Create Page</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Join Page</h1>
                     
                     <div>
-	                    <form action="./join" method="post" enctype="multipart/form-data">
-						  <div class="form-group">
-						    <label for="username">Username</label>
-						    <input type="text" name="username" class="form-control" id="username" >
-						  </div>
-						  <div class="form-group">
-						    <label for="password">Password</label>
-						    <input type="password" name="password" class="form-control" id="password" >
-						  </div>	
-						  <div class="form-group">
-						    <label for="passwordCheck">Password Check</label>
-						    <input type="password" name="password" class="form-control" id="passwordCheck" >
-						  </div>							  					 
-						  <div class="form-group">
-						    <label for="name">Name</label>
-						    <input type="text" name="name" class="form-control" id="name" >
-						  </div>
-						  <div class="form-group">
-						    <label for="phone">Phone</label>
-						    <input type="tel" name="phone" class="form-control" id="phone" >
-						  </div>
-						  <div class="form-group">
-						    <label for="email">Email</label>
-						    <input type="email" name="email" class="form-control" id="email" >
-						  </div>						  
-						  <div class="form-group">
-						    <label for="birth">Birth</label>
-						    <input type="date" name="bith" class="form-control" id="birth" >
-						  </div>
-						  
-						  <div class="form-group">
-						  	<label>첨부파일</label>
-						  	<input type="file" name="attach" class="form-control">
-						  </div>
-						  				  					  
-						  <button type="button" class="btn btn-primary">Submit</button>
-						</form>
-                    	
-                    
+                        <%-- modelAttribute는 Controller에서 보낸 이름과 일치해야 함 --%>
+                        <form:form action="./join" modelAttribute="memberDTO" method="post" enctype="multipart/form-data">
+                            
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <form:input path="username" cssClass="form-control" id="username" />
+                                <form:errors path="username" cssClass="text-danger" element="div" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <form:password path="password" cssClass="form-control" id="password" />
+                                <form:errors path="password" cssClass="text-danger" element="div" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="passwordCheck">Password Check</label>
+                                <%-- 비밀번호 확인은 DTO에 필드가 없다면 일반 input 사용 --%>
+                                <input type="password" id="passwordCheck" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <form:input path="name" cssClass="form-control" id="name" />
+                                <form:errors path="name" cssClass="text-danger" element="div" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <form:input path="phone" cssClass="form-control" id="phone" placeholder="010-0000-0000" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <form:input path="email" cssClass="form-control" id="email" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="birth">Birth</label>
+                                <form:input type="date" path="birth" cssClass="form-control" id="birth" />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>첨부파일 (Profile Image)</label>
+                                <%-- 파일은 path 대신 일반 input name="attach" 사용 --%>
+                                <input type="file" name="attach" class="form-control">
+                            </div>
+                                                                              
+                            <button type="submit" class="btn btn-primary">Join Now</button>
+                        </form:form>
                     </div>
-
                 </div>
-                <!-- End Page container-fluid -->
-                
-			</div>
-			<!-- End page Content -->
-			<c:import url="/WEB-INF/views/temp/footer.jsp"></c:import>
-		</div>
-		<!-- End Content wrapper -->
-	</div>
-	<!-- End Wrapper -->
-	
-	<c:import url="/WEB-INF/views/temp/footer_script.jsp"></c:import>
-	
-	<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
-	<script>
-      $('#contents').summernote({
-        placeholder: 'Hello Bootstrap 4',
-        tabsize: 2,
-        height: 100
-      });
-    </script>
-	<script src="/js/member/join.js"></script>
-
+            </div>
+            <c:import url="/WEB-INF/views/temp/footer.jsp"></c:import>
+        </div>
+    </div>
+    <c:import url="/WEB-INF/views/temp/footer_script.jsp"></c:import>
 </body>
 </html>
