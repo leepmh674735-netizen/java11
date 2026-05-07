@@ -3,51 +3,67 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  <mapper namespace="com.winter.app.member.MemberMapper">
-  	<update id="update" parameterType="MemberDTO">
-  		UPDATE "TB_MEMBER"
-  		<set>
-  			<if test="name != null"> "NAME"= #{name}, </if>
-  			<if test="password != null"> "PASSWORD"=#{password}, </if>
-  			<if test="email != null"> "EMAIL"= #{email}, </if>
-  			<if test="birth != null"> "BIRTH"= #{birth}, </if>
-  			<if test="phone != null"> "PHONE"= #{phone}, </if>
-  		</set>	
-  		WHERE "USERNAME"=#{username}
-  	</update>
-  
-  	<insert id="join" parameterType="MemberDTO">
-  		INSERT INTO "TB_MEMBER" 
-  		VALUES (#{username}, #{name}, #{password}, #{phone}, #{email}, #{birth})
-  	</insert>
-  	
-  	<insert id="addProfile" parameterType="ProfileDTO">
-  		INSERT INTO "TB_PROFILE" ("FILE_NAME", "ORI_NAME", "USERNAME")
-  		VALUES (#{fileName}, #{oriName}, #{username})
-  	</insert>
-  	
-  	<select id="detail" parameterType="MemberDTO" resultMap="detailResult">
-  		SELECT *
-  		FROM "TB_MEMBER" M
-  			 LEFT JOIN
-  			 "TB_PROFILE" F
-  			 USING("USERNAME")
-  		WHERE "USERNAME"=#{username}
-  	</select>
-  	
-  	<resultMap type="MemberDTO" id="detailResult">
-  		<id column="USERNAME" property="username"/>
-  		<result column="NAME" property="name"/>
-  		<result column="PASSWORD" property="password"/>
-  		<result column="phone" property="phone"/>
-  		<result column="EMAIL" property="email"/>
-  		<result column="birth" property="birth"/>
-  		<association property="profileDTO" javaType="ProfileDTO">
-  			<id column="FILE_NUM" property="fileNum"/>
-  			<result column="FILE_NAME" property="fileName"/>
-  			<result column="ORI_NAME" property="oriName"/>
-  		</association>
-  		
-  	</resultMap>
-  	
-  </mapper>
+<mapper namespace="com.winter.yubin.member.MemberMapper">
+
+    <!-- 1. 회원 정보 수정 -->
+    <update id="update" parameterType="MemberDTO">
+        UPDATE TB_MEMBER
+        <set>
+            <if test="name != null"> NAME = #{name}, </if>
+            <if test="password != null"> PASSWORD = #{password}, </if>
+            <if test="email != null"> EMAIL = #{email}, </if>
+            <if test="birth != null"> BIRTH = #{birth}, </if>
+            <if test="phone != null"> PHONE = #{phone}, </if>
+        </set>    
+        WHERE USERNAME = #{username}
+    </update>
+
+    <!-- 2. 회원 가입 -->
+    <insert id="join" parameterType="MemberDTO">
+        INSERT INTO TB_MEMBER (USERNAME, NAME, PASSWORD, PHONE, EMAIL, BIRTH)
+        VALUES (#{username}, #{name}, #{password}, #{phone}, #{email}, #{birth})
+    </insert>
+    
+    <!-- 3. 프로필 이미지 등록 -->
+    <insert id="addProfile" parameterType="ProfileDTO">
+        INSERT INTO TB_PROFILE (FILE_NAME, ORI_NAME, USERNAME)
+        VALUES (#{fileName}, #{oriName}, #{username})
+    </insert>
+    
+    <!-- 4. 회원 상세 정보 조회 (프로필 및 권한 포함) -->
+    <select id="detail" parameterType="MemberDTO" resultMap="detailResult">
+        SELECT 
+            M.*, 
+            P.FILE_NUM, P.FILE_NAME, P.ORI_NAME,
+            R.ROLE_NUM, R.ROLE_NAME
+        FROM TB_MEMBER M
+             LEFT OUTER JOIN TB_PROFILE P ON M.USERNAME = P.USERNAME
+             LEFT OUTER JOIN TB_MEMBER_ROLE MR ON M.USERNAME = MR.USERNAME
+             LEFT OUTER JOIN TB_ROLE R ON MR.ROLE_NUM = R.ROLE_NUM
+        WHERE M.USERNAME = #{username}
+    </select>
+    
+    <!-- 5. ResultMap 설정 -->
+    <resultMap type="MemberDTO" id="detailResult">
+        <id column="USERNAME" property="username"/>
+        <result column="NAME" property="name"/>
+        <result column="PASSWORD" property="password"/>
+        <result column="PHONE" property="phone"/>
+        <result column="EMAIL" property="email"/>
+        <result column="BIRTH" property="birth"/>
+        
+        <!-- 1:1 관계 (프로필) -->
+        <association property="profileDTO" javaType="ProfileDTO">
+            <id column="FILE_NUM" property="fileNum"/>
+            <result column="FILE_NAME" property="fileName"/>
+            <result column="ORI_NAME" property="oriName"/>
+        </association>
+        
+        <!-- 1:N 관계 (권한 리스트) -->
+        <collection property="roleDTOs" ofType="RoleDTO">
+            <id column="ROLE_NUM" property="roleNum"/>
+            <result column="ROLE_NAME" property="roleName"/>
+        </collection>
+    </resultMap>
+    
+</mapper>

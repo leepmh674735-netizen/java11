@@ -32,7 +32,7 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 	
-	@Value("${app.board.notice}")
+	@Value("${yubin.board.notice}")
 	private String name;
 	
 	@ModelAttribute("name")

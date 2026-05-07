@@ -1,4 +1,4 @@
-ppackage com.winter.app;
+ppackage com.winter.yubin;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

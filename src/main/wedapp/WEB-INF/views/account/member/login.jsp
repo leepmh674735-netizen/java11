@@ -27,17 +27,16 @@
                     <h1 class="h3 mb-4 text-gray-800">Create Page</h1>
                     
                     <div>
-                    	<form:form action="./login" modelAttribute="memberDTO" method="post" enctype="multipart/form-data">
-						  <div class="form-group">
+                    	<form:form action="./login" method="post" ectorty=
 						    
 						    <form:input path="username" cssClass="form-control" id="username"/>
-						    <form:errors path="username"></form:errors>
+						    
 						    
 						  </div>
 						  <div class="form-group">
 						    <label for="password">Password</label>
-						    <form:password path="password" cssClass="form-control" id="password" />
-						    <form:errors path="password"></form:errors>
+						    <input type="password" name="password" class="form-control" id="password" />
+						    
 						  </div>						 
                     	  
 						  <button type="submit" class="btn btn-primary">Submit</button>
