@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +25,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // CSRF 비활성화 (개발 단계)
+            .csrf(csrf -> csrf.disable()) // CSRF 비활성화 (개발 및 학습 단계용)
             
             .authorizeHttpRequests(auth -> auth
                 // 공지사항 관리 권한 설정
@@ -33,27 +34,28 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             
-            // 3. 로그인 설정 (끊겼던 부분 완성)
+            // 3. 로그인 설정
             .formLogin(form -> form
-                .loginPage("/member/login")       // 커스텀 로그인 페이지 경로
-                .loginProcessingUrl("/member/login") // 폼의 action 경로 (Security가 낚아챔)
-                .usernameParameter("username")    // MemberDTO의 username 필드와 매칭
-                .passwordParameter("password")    // MemberDTO의 password 필드와 매칭
-                .defaultSuccessUrl("/")           // 로그인 성공 후 이동할 메인 페이지
+                .loginPage("/member/login")           // 커스텀 로그인 페이지 경로
+                .loginProcessingUrl("/member/login")    // 폼의 action 경로
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/", true)          // 로그인 성공 후 메인으로 이동
                 .permitAll()
             )
             
-            // 4. 로그아웃 설정 (추가 권장)
+            // 4. 로그아웃 설정
             .logout(logout -> logout
-                .logoutUrl("/member/logout")
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true) // 세션 무효화
+                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout")) // 로그아웃 경로 설정
+                .logoutSuccessUrl("/")                // 로그아웃 후 이동할 경로
+                .invalidateHttpSession(true)          // 세션 무효화
+                .deleteCookies("JSESSIONID")          // 쿠키 삭제
             );
 
-        return http.build();
+        return http.build(); // 변수명을 파라미터인 'http'와 맞춤
     }
 
-    // 5. 비밀번호 암호화 빈 등록 (로그인 시 필수)
+    // 5. 비밀번호 암호화 빈 등록
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
