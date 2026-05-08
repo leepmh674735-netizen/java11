@@ -28,7 +28,7 @@ public class MessageMappingConfig implements WebMvcConfigurer{
 	    	CookieLocaleResolver resolver2 = new CookieLocaleResolver();
 	    	resolver2.setDefalutLocale(Locale.KOREAN);
 	    	
-	    	return resolver2;
+	    	return resolve  r2;
 	    }
 	
 	
