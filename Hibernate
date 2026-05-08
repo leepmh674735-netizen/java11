@@ -1,0 +1,64 @@
+package com.springpractice.ch02.service.impl;
+
+import java.util.List;
+import javax.inject.Inject; // 세미콜론 추가
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Service; // springframwork -> springframework
+import org.springframework.transaction.annotation.Transactional; // com.springframwork -> org.springframework
+
+import com.springinpractice.ch02.model.Contact; // Contect -> Contact 스펠링 통일
+import com.springinpractice.ch02.service.ContactService;
+
+@Service
+@Transactional
+public class ContactServiceImpl implements ContactService {
+
+    @Inject 
+    private SessionFactory sessionFactory;
+
+    @Override
+    public void createContact(Contact contact) {
+        getSession().save(contact);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked") // SuppressWaeming -> SuppressWarnings, unckecked -> unchecked
+    public List<Contact> getContacts() {
+        return getSession()
+                .createQuery("from Contact") // form -
+                .list();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Contact> getContactsByEmail(String email) {
+        return getSession()
+                .getNamedQuery("findContactsByEmail") // getNameQuery 
+                .setParameter("email", "%" + email + "%") // setString -> setParameter (최신 권장)
+                .list();
+    }
+
+    @Override
+    public Contact getContact(Long id) { // getContat -> getContact
+        return (Contact) getSession().get(Contact.class, id); // (Contect) -> (Contact)
+    }
+
+    @Override
+    public void updateContact(Contact contact) {
+        getSession().update(contact);
+    }
+
+    @Override
+    public void deleteContact(Long id) {
+        Contact contact = getContact(id);
+        if (contact != null) {
+            getSession().delete(contact);
+        }
+    }
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession(); // seessionFactory 
+    }
+}
