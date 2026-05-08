@@ -35,7 +35,8 @@ public class SecurityConfig {
             )
             
             // 3. 로그인 설정
-            .formLogin(form -> form
+            .formLogin(form -> 
+                form
                 .loginPage("/member/login")           // 커스텀 로그인 페이지 경로
                 .loginProcessingUrl("/member/login")    // 폼의 action 경로
                 .usernameParameter("username")
