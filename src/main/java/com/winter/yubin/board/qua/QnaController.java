@@ -1,4 +1,4 @@
-package com.winter.yubin.board.qna;
+package com.winter.yubin.board.qua;
 
 import java.util.List;
 

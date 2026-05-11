@@ -54,9 +54,9 @@ public class CartController {
 		// 여러 개의 상품 번호와 사용자 ID를 묶어서 처리하기 위해 List 생성
 		List<CartDTO> ar = new ArrayList<>();
 		
-		for(Long pNum : productNum) {
+		for(Long 1 : productNum) {
 			CartDTO cartDTO = new CartDTO();
-			cartDTO.setProductNum(pNum);
+			cartDTO.setProductNum(1);
 			cartDTO.setUsername(memberDTO.getUsername());
 			ar.add(cartDTO);
 		}
